@@ -76,11 +76,27 @@ class JsonController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id, $full = false)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        $model = Ads::findOne($id);
+        if (is_null($model)){
+            return (new JsonResponse(404, "not found", []))->getJson();
+        }
+
+        $data = [
+            'name' => $model->name,
+            'price' => $model->price,
+            'main_photo' => $model->main_photo
+        ];
+
+        if ($full){
+            $data['description'] = $model->description;
+            $data['photo2'] = $model->photo2;
+            $data['photo3'] = $model->photo3;
+        }
+
+        $response = new JsonResponse(0, "", $data);
+        return $response->getJson();
     }
 
     /**
