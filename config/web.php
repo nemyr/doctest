@@ -54,6 +54,7 @@ $config = [
     ],
     'params' => $params,
     'defaultRoute' => 'ads',
+    'name' => 'DocTest'
 ];
 
 if (YII_ENV_DEV) {
