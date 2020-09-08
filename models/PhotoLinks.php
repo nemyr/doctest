@@ -56,6 +56,6 @@ class PhotoLinks extends \yii\db\ActiveRecord
      */
     public function getId0()
     {
-        return $this->hasOne(Ad::className(), ['id' => 'id']);
+        return $this->hasOne(Ad::className(), ['id' => 'ad_id']);
     }
 }
