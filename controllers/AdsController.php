@@ -14,6 +14,19 @@ use yii\filters\VerbFilter;
  */
 class AdsController extends Controller
 {
+
+    const BASE_VIEW_ATTR = [
+        'name',
+        'price',
+        'main_photo'
+    ];
+
+    const ADDITIONAL_VIEW_ATTR = [
+        'photo2',
+        'photo3',
+        'description:ntext',
+    ];
+
     /**
      * {@inheritdoc}
      */
@@ -50,13 +63,18 @@ class AdsController extends Controller
     /**
      * Displays a single Ads model.
      * @param integer $id
+     * @param bool $full
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id, $full = false)
     {
+        $attributes = $full ? array_merge(self::BASE_VIEW_ATTR, self::ADDITIONAL_VIEW_ATTR) : self::BASE_VIEW_ATTR ;
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'attributes' => $attributes,
+            'full' => $full,
         ]);
     }
 

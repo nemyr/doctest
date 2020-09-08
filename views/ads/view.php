@@ -24,20 +24,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
+    <?php
+        if (!$full){
+            echo Html::a('Full info', ['view', 'id' => $model->id, 'full'=>true], ['class' => 'btn btn-info']);
+        }
+    ?>
+    <?= Html::a('Back to list', ['index'], ['class' => 'btn btn-primary']) ?>
     </p>
+
 
     <?= DetailView::widget([
         'model' => $model,
-        'attributes' => [
-            'id',
-            'name',
-            'description:ntext',
-            'price',
-            'date',
-            'main_photo',
-            'photo2',
-            'photo3',
-        ],
+        'attributes' => $attributes,
     ]) ?>
 
 </div>
