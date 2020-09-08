@@ -16,6 +16,7 @@ class AdsController extends Controller
 {
 
     const BASE_VIEW_ATTR = [
+        'id',
         'name',
         'price',
         'main_photo'
