@@ -15,6 +15,9 @@ use yii\filters\VerbFilter;
  */
 class JsonController extends Controller
 {
+    const MAX_NAME_LENGTH = 20;
+    const MAX_DESC_LENGTH = 1000;
+
     private $data;
 
     /**
@@ -74,7 +77,6 @@ class JsonController extends Controller
      * Displays a single Ads model.
      * @param integer $id
      * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id, $full = false)
     {
@@ -101,69 +103,50 @@ class JsonController extends Controller
 
     /**
      * Creates a new Ads model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
+        $response = new JsonResponse();
+
+        foreach (Ads::REQUIRED_FIELDS as $field){
+            if (!isset($this->data[$field])){
+                $response->setError(5);
+                $response->setMessage("{$field} is required");
+                return $response->getJson();
+            }
+        }
+
+        if(strlen($this->data['name']) > self::MAX_NAME_LENGTH){
+            $response->setError(3);
+            $response->setMessage("Name is too long");
+            return $response->getJson();
+        }
+
+        if (strlen($this->data['description']) > self::MAX_DESC_LENGTH){
+            $response->setError(4);
+            $response->setMessage("Description is too long");
+            return $response->getJson();
+        }
+
         $model = new Ads();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $model->name = $this->data['name'];
+        $model->description = $this->data['description'];
+        $model->main_photo = $this->data['main_photo'];
+        $model->photo2 = $this->data['photo2']??"";
+        $model->photo3 = $this->data['photo3']??"";
+        $model->price = $this->data['price'];
+
+        $isSave = $model->save();
+
+        if (!$isSave){
+            $response->setError(6);
+            $response->setMessage("Ad not saved");
+            return $response->getJson();
         }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Updates an existing Ads model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Deletes an existing Ads model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
-    }
-
-    /**
-     * Finds the Ads model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Ads the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
-    {
-        if (($model = Ads::findOne($id)) !== null) {
-            return $model;
-        }
-
-        throw new NotFoundHttpException('The requested page does not exist.');
+        $response->setData(['id' => $model->id]);
+        return $response->getJson();
     }
 }

@@ -6,9 +6,9 @@ namespace app\models;
 
 class JsonResponse
 {
-    private $error = 0;
-    private $message = "";
-    private $data = [];
+    private $error;
+    private $message;
+    private $data;
 
     /**
      * JsonResponse constructor.
@@ -16,10 +16,22 @@ class JsonResponse
      * @param string $message
      * @param array $data
      */
-    public function __construct(int $error, string $message, array $data)
+    public function __construct(int $error = 0, string $message = "", array $data = [])
     {
         $this->error = $error;
         $this->message = $message;
+        $this->data = $data;
+    }
+
+    public function setError($error){
+        $this->error = $error;
+    }
+
+    public function setMessage($message){
+        $this->message = $message;
+    }
+
+    public function setData(array $data){
         $this->data = $data;
     }
 

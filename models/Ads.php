@@ -18,6 +18,7 @@ use Yii;
  */
 class Ads extends \yii\db\ActiveRecord
 {
+    const REQUIRED_FIELDS = ['name', 'main_photo', 'price'];
     /**
      * {@inheritdoc}
      */
@@ -32,7 +33,7 @@ class Ads extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'main_photo', 'price'], 'required'],
+            [self::REQUIRED_FIELDS, 'required'],
             [['price'], 'number'],
             [['date'], 'safe'],
             [['description'], 'string', 'max' => 1000],
