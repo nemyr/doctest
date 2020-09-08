@@ -12,8 +12,9 @@ use Yii;
  * @property string|null $description
  * @property float|null $price
  * @property string|null $date
- *
- * @property PhotoLinks $photoLinks
+ * @property string|null $main_photo
+ * @property string|null $photo2
+ * @property string|null $photo3
  */
 class Ads extends \yii\db\ActiveRecord
 {
@@ -31,10 +32,12 @@ class Ads extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['description'], 'string'],
+            [['name', 'main_photo', 'price'], 'required'],
             [['price'], 'number'],
             [['date'], 'safe'],
-            [['name'], 'string', 'max' => 45],
+            [['description'], 'string', 'max' => 1000],
+            [['name'], 'string', 'max' => 200],
+            [['main_photo', 'photo2', 'photo3'], 'string', 'max' => 1000],
         ];
     }
 
@@ -45,24 +48,13 @@ class Ads extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
+            'name' => 'Title',
             'description' => 'Description',
             'price' => 'Price',
-            'date' => 'Date',
+            'date' => 'Creation date',
+            'main_photo' => 'Main photo',
+            'photo2' => 'Second photo',
+            'photo3' => 'Third photo',
         ];
-    }
-
-    /**
-     * Gets query for [[PhotoLinks]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPhotoLinks()
-    {
-        return $this->hasMany(PhotoLinks::className(), ['ad_id' => 'id']);
-    }
-
-    public function getFirstPhoto(){
-        return $this->hasOne(PhotoLinks::className(), ['ad_id' => 'id']);
     }
 }

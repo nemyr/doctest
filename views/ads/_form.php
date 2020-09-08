@@ -18,6 +18,12 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'price')->textInput() ?>
 
+    <?= $form->field($model, 'main_photo')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'photo2')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'photo3')->textInput(['maxlength' => true]) ?>
+
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>

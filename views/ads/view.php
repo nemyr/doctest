@@ -34,6 +34,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'description:ntext',
             'price',
             'date',
+            'main_photo',
+            'photo2',
+            'photo3',
         ],
     ]) ?>
 
