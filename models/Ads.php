@@ -11,8 +11,9 @@ use Yii;
  * @property string|null $name
  * @property string|null $description
  * @property float|null $price
+ * @property string|null $date
  *
- * @property PhotoLink $photoLink
+ * @property PhotoLinks $photoLinks
  */
 class Ads extends \yii\db\ActiveRecord
 {
@@ -32,6 +33,7 @@ class Ads extends \yii\db\ActiveRecord
         return [
             [['description'], 'string'],
             [['price'], 'number'],
+            [['date'], 'safe'],
             [['name'], 'string', 'max' => 45],
         ];
     }
@@ -46,16 +48,25 @@ class Ads extends \yii\db\ActiveRecord
             'name' => 'Name',
             'description' => 'Description',
             'price' => 'Price',
+            'date' => 'Date',
         ];
     }
 
     /**
-     * Gets query for [[PhotoLink]].
+     * Gets query for [[PhotoLinks]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getPhotoLink()
+    public function getPhotoLinks()
     {
-        return $this->hasOne(PhotoLink::className(), ['id' => 'id']);
+        return $this->hasMany(PhotoLinks::className(), ['ad_id' => 'id']);
+    }
+
+    public function getFirstPhoto(){
+        return $this->hasOne(PhotoLinks::className(), ['ad_id' => 'id']);
+    }
+
+    public function getDate(){
+        return date_format($this->date, "d-m-Y");
     }
 }

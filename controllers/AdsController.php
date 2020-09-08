@@ -37,7 +37,6 @@ class AdsController extends Controller
     {
         $dataProvider = new ActiveDataProvider([
             'query' => Ads::find(),
-
         ]);
 
         return $this->render('index', [
