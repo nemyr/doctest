@@ -65,8 +65,4 @@ class Ads extends \yii\db\ActiveRecord
     public function getFirstPhoto(){
         return $this->hasOne(PhotoLinks::className(), ['ad_id' => 'id']);
     }
-
-    public function getDate(){
-        return date_format($this->date, "d-m-Y");
-    }
 }

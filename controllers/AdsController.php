@@ -37,6 +37,9 @@ class AdsController extends Controller
     {
         $dataProvider = new ActiveDataProvider([
             'query' => Ads::find(),
+            'pagination' => [
+                'pageSize' => 10
+            ],
         ]);
 
         return $this->render('index', [
