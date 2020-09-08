@@ -53,6 +53,7 @@ $config = [
         */
     ],
     'params' => $params,
+    'defaultRoute' => 'ads',
 ];
 
 if (YII_ENV_DEV) {
